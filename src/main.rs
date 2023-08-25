@@ -351,11 +351,8 @@ fn process_file(
 
     for line in reader.lines() {
         let line = line.unwrap();
-println!("{}", line);
         let mut data: Value = serde_json::from_str(&line).unwrap();
         let text = data["text"].as_str().unwrap();
-println!("{}", text);
-assert!(false);
 
         let newlines = if whole_document {
             vec![0, text.len()]
