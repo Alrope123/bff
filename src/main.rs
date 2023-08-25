@@ -9,6 +9,8 @@ use std::sync::Arc;
 use clap::Parser;
 use flate2::read::MultiGzDecoder;
 use flate2::write::GzEncoder;
+use zstd::stream::read::Decoder;
+use zstd::stream::write::Encoder;
 use serde_json;
 use unicode_segmentation::UnicodeSegmentation;
 use rand::Rng;
@@ -309,6 +311,25 @@ fn process_file(
     whole_document: bool,
     whole_paragraphs: bool,
 ) -> Result <(), io::Error> {
+    // let input_file = OpenOptions::new().
+    //     read(true).
+    //     write(false).
+    //     create(false).
+    //     open(input_file)?;
+    // let reader = BufReader::with_capacity(
+    //     1024 * 1024,
+    //     MultiGzDecoder::new(input_file));
+
+    // let output_file = OpenOptions::new().
+    //     read(false).
+    //     write(true).
+    //     create(true).
+    //     truncate(true).
+    //     open(output_file)?;
+    // let mut writer = BufWriter::with_capacity(
+    //     1024 * 1024,
+    //     GzEncoder::new(output_file, Compression::default()));
+
     let input_file = OpenOptions::new().
         read(true).
         write(false).
@@ -316,7 +337,7 @@ fn process_file(
         open(input_file)?;
     let reader = BufReader::with_capacity(
         1024 * 1024,
-        MultiGzDecoder::new(input_file));
+        Decoder::new(input_file)?);
 
     let output_file = OpenOptions::new().
         read(false).
@@ -326,12 +347,15 @@ fn process_file(
         open(output_file)?;
     let mut writer = BufWriter::with_capacity(
         1024 * 1024,
-        GzEncoder::new(output_file, Compression::default()));
+        Encoder::new(output_file, 6)?);
 
     for line in reader.lines() {
+println!("{}", line);
         let line = line.unwrap();
         let mut data: Value = serde_json::from_str(&line).unwrap();
         let text = data["text"].as_str().unwrap();
+println!("{}", text);
+assert!(false);
 
         let newlines = if whole_document {
             vec![0, text.len()]
