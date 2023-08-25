@@ -350,8 +350,8 @@ fn process_file(
         Encoder::new(output_file, 6)?);
 
     for line in reader.lines() {
-println!("{}", line?);
         let line = line.unwrap();
+println!("{}", line);
         let mut data: Value = serde_json::from_str(&line).unwrap();
         let text = data["text"].as_str().unwrap();
 println!("{}", text);
