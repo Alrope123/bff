@@ -353,7 +353,7 @@ fn process_file(
     for line in reader.lines() {
         let line = line.unwrap();
         let mut data: Value = serde_json::from_str(&line).unwrap();
-        data["id"] = Value::Number(i);
+        data["id"] = Value::Number((i));
         i += 1;
         let text = data["text"].as_str().unwrap();
 
