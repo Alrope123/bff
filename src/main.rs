@@ -349,9 +349,12 @@ fn process_file(
         1024 * 1024,
         Encoder::new(output_file, 6)?);
 
+    let mut i = 0;
     for line in reader.lines() {
         let line = line.unwrap();
         let mut data: Value = serde_json::from_str(&line).unwrap();
+        data["id"] = i;
+        i += 1;
         let text = data["text"].as_str().unwrap();
 
         let newlines = if whole_document {
@@ -450,6 +453,8 @@ fn process_file(
         serde_json::to_writer(&mut writer, &data)?;
         writer.write_all(b"\n")?;
     }
+
+    println!("I have seen {} examples!", i);
 
     Ok(())
 }
