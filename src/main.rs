@@ -454,6 +454,7 @@ fn process_file(
         writer.write_all(b"\n")?;
     }
     writer.flush()?;
+    drop(writer);
 
     println!("I have seen {} examples!", i);
 
