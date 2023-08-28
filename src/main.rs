@@ -345,9 +345,10 @@ fn process_file(
         create(true).
         truncate(true).
         open(output_file)?;
-    let mut writer = BufWriter::with_capacity(
-        1024 * 1024,
-        Encoder::new(output_file, 6)?);
+    // let mut writer = BufWriter::with_capacity(
+    //     1024 * 1024,
+    //     Encoder::new(output_file, 6)?);
+    let mut writer = Encoder::new(output_file, 6)?;
 
     let mut i = 0;
     for line in reader.lines() {
@@ -454,7 +455,7 @@ fn process_file(
         writer.write_all(b"\n")?;
     }
     writer.flush()?;
-    drop(writer);
+    writer.finish()?;
 
     println!("I have seen {} examples!", i);
 
