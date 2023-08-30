@@ -99,6 +99,12 @@ struct Args {
     /// in this directory.
     #[arg(long, short = 'o')]
     output_directory: PathBuf,
+
+    #[arg(long, default_value_t = 0)]
+    reader_mode: usize,
+
+    #[arg(long, default_value_t = 0)]
+    writer_mode: usize,
 }
 
 fn tokenize(s: &str) -> impl Iterator<Item = &str> {
@@ -310,34 +316,30 @@ fn process_file(
     annotate_attribute_only: bool,
     whole_document: bool,
     whole_paragraphs: bool,
+    reader_mode: usize,
+    writer_mode: usize,
 ) -> Result <(), io::Error> {
-    // let input_file = OpenOptions::new().
-    //     read(true).
-    //     write(false).
-    //     create(false).
-    //     open(input_file)?;
-    // let reader = BufReader::with_capacity(
-    //     1024 * 1024,
-    //     MultiGzDecoder::new(input_file));
-
-    // let output_file = OpenOptions::new().
-    //     read(false).
-    //     write(true).
-    //     create(true).
-    //     truncate(true).
-    //     open(output_file)?;
-    // let mut writer = BufWriter::with_capacity(
-    //     1024 * 1024,
-    //     GzEncoder::new(output_file, Compression::default()));
 
     let input_file = OpenOptions::new().
         read(true).
         write(false).
         create(false).
         open(input_file)?;
-    let reader = BufReader::with_capacity(
-        1024 * 1024,
-        Decoder::new(input_file)?);
+    
+    let reader;
+    if reader_mode == 0 {
+        reader = BufReader::with_capacity(
+            1024 * 1024,
+            MultiGzDecoder::new(input_file));
+    } else if reader_mode == 1 {
+        reader = BufReader::with_capacity(
+            1024 * 1024,
+            Decoder::new(input_file)?);
+    } else {
+        reader = BufReader::with_capacity(
+            1024 * 1024,
+            input_file);
+    }
 
     let output_file = OpenOptions::new().
         read(false).
@@ -345,10 +347,19 @@ fn process_file(
         create(true).
         truncate(true).
         open(output_file)?;
-    // let mut writer = BufWriter::with_capacity(
-    //     1024 * 1024,
-    //     Encoder::new(output_file, 6)?);
-    let mut writer = Encoder::new(output_file, 6)?;
+    
+    let mut writer;
+    if writer_mode == 0 {
+        writer = = BufWriter::with_capacity(
+            1024 * 1024,
+            GzEncoder::new(output_file, Compression::default()));
+    } else if writer_mode == 1 {
+        writer = Encoder::new(output_file, 6)?;
+    } else {
+        writer = = BufWriter::with_capacity(
+            1024 * 1024,
+            output_file);
+    }
 
     let mut i = 0;
     for line in reader.lines() {
@@ -526,7 +537,9 @@ fn main() {
                 args.annotate_only,
                 args.annotate_attribute_only,
                 args.whole_document,
-                args.whole_paragraphs
+                args.whole_paragraphs,
+                args.reader_mode,
+                args.writer_mode
             ).unwrap();
         });
     }
