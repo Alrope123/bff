@@ -402,11 +402,11 @@ fn process_file(
             1024 * 1024,
             GzEncoder::new(output_file, Compression::default()),
         ))
-    } else if writer_mode == 1 {
-        Box::new(Encoder::new(output_file, 6)?)
     } else {
         Box::new(BufWriter::with_capacity(1024 * 1024, output_file))
     };
+
+    let mut writer_ztd = Box::new(Encoder::new(output_file, 6)?);
 
     let mut i = 0;
     for line in reader.lines() {
@@ -508,15 +508,21 @@ fn process_file(
             }
 
         }
-
-        serde_json::to_writer(&mut writer, &data)?;
-        writer.write_all(b"\n")?;
-    }
-    writer.flush()?;
-    if writer_mode == 1 {
-        if let Some(encoder) = writer.downcast_ref::<Encoder>() {
-            encoder.finish();
+        
+        if write_mode == 1 {
+            serde_json::to_writer(&mut writer, &data)?;
+            writer.write_all(b"\n")?;
+        } else {
+            serde_json::to_writer(&mut writer_ztd, &data)?;
+            writer_ztd.write_all(b"\n")?;
         }
+        
+    }
+    if write_mode == 1 {
+        writer_ztd.flush()?;
+        writer_ztd.finish()?;
+    } else {
+        writer.flush()?;
     }
 
     println!("I have seen {} examples!", i);
