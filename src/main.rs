@@ -520,11 +520,13 @@ fn main() {
 
     let suggested_size =
         BloomFilter::suggest_size_in_bytes(args.expected_ngram_count);
+    println!("Suggested filter size: {}", suggested_size);
+    
     if suggested_size * 2 < bloom_filter.size_in_bytes() {
         println!(
             "WARNING: Your bloom filter is more than twice as large as suggested for {} elements, which is {}. \
             This is good for accuracy, but it is much slower, and likely not worth the trade-off.",
-            args.expected_ngram_count, suggested_size);
+            args.expected_ngram_count);
     }
 
     let threadpool = ThreadPool::new(threads);
