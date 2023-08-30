@@ -350,13 +350,13 @@ fn process_file(
     
     let mut writer;
     if writer_mode == 0 {
-        writer = = BufWriter::with_capacity(
+        writer = BufWriter::with_capacity(
             1024 * 1024,
             GzEncoder::new(output_file, Compression::default()));
     } else if writer_mode == 1 {
         writer = Encoder::new(output_file, 6)?;
     } else {
-        writer = = BufWriter::with_capacity(
+        writer = BufWriter::with_capacity(
             1024 * 1024,
             output_file);
     }
