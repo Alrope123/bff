@@ -509,7 +509,7 @@ fn process_file(
 
         }
         
-        if write_mode == 1 {
+        if writer_mode == 1 {
             serde_json::to_writer(&mut writer, &data)?;
             writer.write_all(b"\n")?;
         } else {
@@ -518,7 +518,7 @@ fn process_file(
         }
         
     }
-    if write_mode == 1 {
+    if writer_mode == 1 {
         writer_ztd.flush()?;
         writer_ztd.finish()?;
     } else {
