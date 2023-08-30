@@ -326,17 +326,17 @@ fn process_file(
         create(false).
         open(input_file)?;
     
-    let reader = match reader_mode {
-        0 => BufReader::with_capacity(
-            1024 * 1024,
-            MultiGzDecoder::new(input_file)),
-        1 => BufReader::with_capacity(
-            1024 * 1024,
-            Decoder::new(input_file)?),
-        _ => BufReader::with_capacity(
-            1024 * 1024,
-            input_file),
-    };
+    // let reader = match reader_mode {
+    //     0 => BufReader::with_capacity(
+    //         1024 * 1024,
+    //         MultiGzDecoder::new(input_file)),
+    //     1 => BufReader::with_capacity(
+    //         1024 * 1024,
+    //         Decoder::new(input_file)?),
+    //     _ => BufReader::with_capacity(
+    //         1024 * 1024,
+    //         input_file),
+    // };
     // if reader_mode == 0 {
     //     reader = BufReader::with_capacity(
     //         1024 * 1024,
@@ -350,6 +350,14 @@ fn process_file(
     //         1024 * 1024,
     //         input_file);
     // }
+    let inner_reader: Box<dyn Read> = if reader_mode == 0 {
+        Box::new(MultiGzDecoder::new(input_file))
+    } else if reader_mode == 1 {
+        Box::new(Decoder::new(input_file)?)
+    } else {
+        Box::new(input_file)
+    };
+    let reader = BufReader::with_capacity(1024 * 1024, inner_reader);
 
     let output_file = OpenOptions::new().
         read(false).
@@ -358,15 +366,15 @@ fn process_file(
         truncate(true).
         open(output_file)?;
     
-    let mut writer = match writer_mode {
-        0 => BufWriter::with_capacity(
-            1024 * 1024,
-            GzEncoder::new(output_file, Compression::default())),
-        1 => Encoder::new(output_file, 6)?,
-        _ => BufWriter::with_capacity(
-            1024 * 1024,
-            output_file),
-    };
+    // let mut writer = match writer_mode {
+    //     0 => BufWriter::with_capacity(
+    //         1024 * 1024,
+    //         GzEncoder::new(output_file, Compression::default())),
+    //     1 => Encoder::new(output_file, 6)?,
+    //     _ => BufWriter::with_capacity(
+    //         1024 * 1024,
+    //         output_file),
+    // };
     // if writer_mode == 0 {
     //     writer = BufWriter::with_capacity(
     //         1024 * 1024,
@@ -378,6 +386,27 @@ fn process_file(
     //         1024 * 1024,
     //         output_file);
     // }
+    // writer_mode == 0 {
+    //     writer = BufWriter::with_capacity(
+    //         1024 * 1024,
+    //         GzEncoder::new(output_file, Compression::default()));
+    // } else if writer_mode == 1 {
+    //     writer = Encoder::new(output_file, 6)?;
+    // } else {
+    //     writer = BufWriter::with_capacity(
+    //         1024 * 1024,
+    //         output_file);
+    // }
+    let mut writer: Box<dyn Write> = if writer_mode == 0 {
+        Box::new(BufWriter::with_capacity(
+            1024 * 1024,
+            GzEncoder::new(output_file, Compression::default()),
+        ))
+    } else if writer_mode == 1 {
+        Box::new(Encoder::new(output_file, 6)?)
+    } else {
+        Box::new(BufWriter::with_capacity(1024 * 1024, output_file))
+    };
 
     let mut i = 0;
     for line in reader.lines() {
