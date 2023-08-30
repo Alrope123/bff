@@ -513,7 +513,11 @@ fn process_file(
         writer.write_all(b"\n")?;
     }
     writer.flush()?;
-    writer.finish()?;
+    if writer_mode == 1 {
+        if let Some(encoder) = writer.downcast_ref::<Encoder>() {
+            encoder.finish();
+        }
+    }
 
     println!("I have seen {} examples!", i);
 
