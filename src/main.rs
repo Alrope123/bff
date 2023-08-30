@@ -359,7 +359,7 @@ fn process_file(
     };
     let reader = BufReader::with_capacity(1024 * 1024, inner_reader);
 
-    let output_file = OpenOptions::new().
+    let output_file_main = OpenOptions::new().
         read(false).
         write(true).
         create(true).
@@ -400,13 +400,20 @@ fn process_file(
     let mut writer: Box<dyn Write> = if writer_mode == 0 {
         Box::new(BufWriter::with_capacity(
             1024 * 1024,
-            GzEncoder::new(output_file, Compression::default()),
+            GzEncoder::new(output_file_main, Compression::default()),
         ))
     } else {
-        Box::new(BufWriter::with_capacity(1024 * 1024, output_file))
+        Box::new(BufWriter::with_capacity(1024 * 1024, output_file_main))
     };
 
-    let mut writer_ztd = Box::new(Encoder::new(output_file, 6)?);
+    let output_file_ztd = OpenOptions::new().
+        read(false).
+        write(true).
+        create(true).
+        truncate(true).
+        open(output_file)?;
+
+    let mut writer_ztd = Box::new(Encoder::new(output_file_ztd, 6)?);
 
     let mut i = 0;
     for line in reader.lines() {
