@@ -1,7 +1,7 @@
 use std::collections::VecDeque;
 use std::fs::OpenOptions;
 use std::io;
-use std::io::{BufRead, BufReader, BufWriter, Write};
+use std::io::{Read, BufRead, BufReader, BufWriter, Write};
 use std::path::PathBuf;
 use std::hash::{BuildHasher, Hash, Hasher};
 use std::mem::size_of;
