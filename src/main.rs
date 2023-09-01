@@ -367,7 +367,7 @@ fn process_file(
         data["id"] = Value::Number(serde_json::Number::from(i));
         i += 1;
         let text = data["text"].as_str().unwrap();
-        data["length"] = serde_json::to_value(text.len()).unwrap();
+        data["length"] = Value::Number(serde_json::Number::from(text.len()));
 
         let newlines = if whole_document {
             vec![0, text.len()]
