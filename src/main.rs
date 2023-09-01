@@ -426,7 +426,7 @@ fn process_file(
         if annotate_attribute_only || annotate_only {
             data["bff_duplicate_spans"] = serde_json::to_value(windows_to_remove).unwrap();
             data["bff_contained_ngram_count"] = serde_json::to_value(total_contained_ngrams).unwrap();
-            data["length"] = Value::Number(serde_json::Number::from(text.len()));
+            // data["length"] = Value::Number(serde_json::Number::from(text.len()));
         } else {
             let mut output_paragraphs = String::new();
             let mut last_end = 0;
