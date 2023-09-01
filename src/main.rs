@@ -440,7 +440,7 @@ fn process_file(
         }
 
         if annotate_attribute_only || annotate_only {
-            data["length"] = Value::Number(serde_json::Number::from(text.len()));
+            data["length"] = Value::Number(serde_json::Number::from(data["text"].as_str().unwrap().len()));
         }
 
         if annotate_attribute_only {
