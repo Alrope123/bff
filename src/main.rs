@@ -462,11 +462,11 @@ fn process_file(
         }
         
         if writer_mode == 1 {
-            serde_json::to_writer(&mut writer, &data)?;
-            writer.write_all(b"\n")?;
-        } else {
             serde_json::to_writer(&mut writer_ztd, &data)?;
             writer_ztd.write_all(b"\n")?;
+        } else {
+            serde_json::to_writer(&mut writer, &data)?;
+            writer.write_all(b"\n")?;
         }
         
     }
