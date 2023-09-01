@@ -367,7 +367,6 @@ fn process_file(
         data["id"] = Value::Number(serde_json::Number::from(i));
         i += 1;
         let text = data["text"].as_str().unwrap();
-        data["length"] = Value::Number(serde_json::Number::from(text.len()));
 
         let newlines = if whole_document {
             vec![0, text.len()]
@@ -427,6 +426,7 @@ fn process_file(
         if annotate_attribute_only || annotate_only {
             data["bff_duplicate_spans"] = serde_json::to_value(windows_to_remove).unwrap();
             data["bff_contained_ngram_count"] = serde_json::to_value(total_contained_ngrams).unwrap();
+            data["length"] = serde_json::to_value(text.len()).unwrap();
         } else {
             let mut output_paragraphs = String::new();
             let mut last_end = 0;
