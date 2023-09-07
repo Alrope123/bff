@@ -1,3 +1,4 @@
+use core::num;
 use std::collections::VecDeque;
 use std::fs::OpenOptions;
 use std::io;
@@ -381,6 +382,7 @@ fn process_file(
         };
         let mut windows_to_remove = Vec::new();
         let mut total_contained_ngrams = 0;
+        let mut total_ngrams = 0;
 
         for paragraph_window in newlines.windows(2) {
             let paragraph = &text[paragraph_window[0]..paragraph_window[1]];
@@ -409,6 +411,7 @@ fn process_file(
 
             // calculate how many ngrams are in the bloom filter
             let number_of_ngrams = hashes.len();
+            total_ngrams += number_of_ngrams;
 
             // produce output
             let too_many_duplicate_ngrams =
@@ -425,6 +428,7 @@ fn process_file(
         // if annotate_attribute_only or annotate_only, add the annotation to the json
         if annotate_attribute_only || annotate_only {
             data["bff_duplicate_spans"] = serde_json::to_value(windows_to_remove).unwrap();
+            data["bff_ngram_count"] = serde_json::to_value(total_ngrams).unwrap();
             data["bff_contained_ngram_count"] = serde_json::to_value(total_contained_ngrams).unwrap();
             // data["length"] = Value::Number(serde_json::Number::from(text.len()));
         } else {
@@ -447,6 +451,7 @@ fn process_file(
             // Allowed fields
             let allowed_fields = [
                 "bff_duplicate_spans",
+                "bff_ngram_count",
                 "bff_contained_ngram_count",
                 "id",
                 "source",
