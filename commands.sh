@@ -1,5 +1,5 @@
 # target/release/bff \
-#   --bloom-filter-file /gscratch/h2lab/micdun/bff/full_pile_train_filter_0.bff  \
+#   --bloom-filter-file /gscratch/h2lab/micdun/bff/filters/ngram_13/full_pile_train_filter_0.bff  \
 #   --output-directory /gscratch/h2lab/alrope/data/bff/redpajama-arxiv+pile/filter_0 \
 #   --no-update-bloom-filter \
 #   --reader-mode 2 \
@@ -10,7 +10,7 @@
 #   /gscratch/h2lab/alrope/data/redpajama/arxiv/*.jsonl
 
 # target/release/bff \
-#   --bloom-filter-file /gscratch/h2lab/micdun/bff/full_pile_train_filter_1.bff  \
+#   --bloom-filter-file /gscratch/h2lab/micdun/bff/filters/ngram_13/full_pile_train_filter_1.bff  \
 #   --output-directory /gscratch/h2lab/alrope/data/bff/redpajama-arxiv+pile/filter_1 \
 #   --no-update-bloom-filter \
 #   --reader-mode 2 \
@@ -20,8 +20,9 @@
 #   --annotate-attribute-only \
 #   /gscratch/h2lab/alrope/data/redpajama/arxiv/*.jsonl
 
+
 target/release/bff \
-  --bloom-filter-file /gscratch/h2lab/micdun/bff/full_pile_train_filter_0.bff  \
+  --bloom-filter-file /gscratch/h2lab/micdun/bff/filters/ngram_13/full_pile_train_filter_0.bff  \
   --output-directory /gscratch/h2lab/alrope/data/bff/wikipedia+pile/filter_0/AA \
   --no-update-bloom-filter \
   --reader-mode 2 \
@@ -32,7 +33,7 @@ target/release/bff \
   /gscratch/h2lab/alrope/data/wikipedia/processed/AA/*
 
 target/release/bff \
-  --bloom-filter-file /gscratch/h2lab/micdun/bff/full_pile_train_filter_0.bff  \
+  --bloom-filter-file /gscratch/h2lab/micdun/bff/filters/ngram_13/full_pile_train_filter_0.bff  \
   --output-directory /gscratch/h2lab/alrope/data/bff/wikipedia+pile/filter_0/AB \
   --no-update-bloom-filter \
   --reader-mode 2 \
@@ -43,7 +44,7 @@ target/release/bff \
   /gscratch/h2lab/alrope/data/wikipedia/processed/AB/*
 
 target/release/bff \
-  --bloom-filter-file /gscratch/h2lab/micdun/bff/full_pile_train_filter_1.bff  \
+  --bloom-filter-file /gscratch/h2lab/micdun/bff/filters/ngram_13/full_pile_train_filter_1.bff  \
   --output-directory /gscratch/h2lab/alrope/data/bff/wikipedia+pile/filter_1/AA \
   --no-update-bloom-filter \
   --reader-mode 2 \
@@ -54,7 +55,7 @@ target/release/bff \
   /gscratch/h2lab/alrope/data/wikipedia/processed/AA/*
 
 target/release/bff \
-  --bloom-filter-file /gscratch/h2lab/micdun/bff/full_pile_train_filter_1.bff  \
+  --bloom-filter-file /gscratch/h2lab/micdun/bff/filters/ngram_13/full_pile_train_filter_1.bff  \
   --output-directory /gscratch/h2lab/alrope/data/bff/wikipedia+pile/filter_1/AB \
   --no-update-bloom-filter \
   --reader-mode 2 \
