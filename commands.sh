@@ -22,7 +22,7 @@
 
 target/release/bff \
   --bloom-filter-file /gscratch/h2lab/micdun/bff/full_pile_train_filter_0.bff  \
-  --output-directory /gscratch/h2lab/alrope/data/bff/redpajama-arxiv+pile/filter_0/AA \
+  --output-directory /gscratch/h2lab/alrope/data/bff/wikipedia+pile/filter_0/AA \
   --no-update-bloom-filter \
   --reader-mode 2 \
   --writer-mode 2 \
@@ -33,7 +33,7 @@ target/release/bff \
 
 target/release/bff \
   --bloom-filter-file /gscratch/h2lab/micdun/bff/full_pile_train_filter_0.bff  \
-  --output-directory /gscratch/h2lab/alrope/data/bff/redpajama-arxiv+pile/filter_0/AB \
+  --output-directory /gscratch/h2lab/alrope/data/bff/wikipedia+pile/filter_0/AB \
   --no-update-bloom-filter \
   --reader-mode 2 \
   --writer-mode 2 \
@@ -44,7 +44,7 @@ target/release/bff \
 
 target/release/bff \
   --bloom-filter-file /gscratch/h2lab/micdun/bff/full_pile_train_filter_1.bff  \
-  --output-directory /gscratch/h2lab/alrope/data/bff/redpajama-arxiv+pile/filter_1/AA \
+  --output-directory /gscratch/h2lab/alrope/data/bff/wikipedia+pile/filter_1/AA \
   --no-update-bloom-filter \
   --reader-mode 2 \
   --writer-mode 2 \
@@ -55,7 +55,7 @@ target/release/bff \
 
 target/release/bff \
   --bloom-filter-file /gscratch/h2lab/micdun/bff/full_pile_train_filter_1.bff  \
-  --output-directory /gscratch/h2lab/alrope/data/bff/redpajama-arxiv+pile/filter_1/AB \
+  --output-directory /gscratch/h2lab/alrope/data/bff/wikipedia+pile/filter_1/AB \
   --no-update-bloom-filter \
   --reader-mode 2 \
   --writer-mode 2 \
